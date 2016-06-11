@@ -1,9 +1,11 @@
 require 'fileutils'
 require 'rake/clean'
+require 'yaml'
 
 BOOK = "book"
 BOOK_PDF = BOOK+".pdf"
 BOOK_EPUB = BOOK+".epub"
+CATALOG_FILE = "catalog.yml"
 CONFIG_FILE = "config.yml"
 WEBROOT = "webroot"
 
@@ -16,6 +18,22 @@ end
 
 def build_all(mode)
   sh "review-compile --target=#{mode} --footnotetext --stylesheet=style.css"
+end
+
+def convert_summary
+  catalog = Hash.new { |h, k| h[k] = [] }
+  catalog['PREDEF'] = ['README.re']
+  File.read("SUMMARY.md").scan(/\((.*.md)/).flatten.each do |file|
+    case file
+    when /appendix/
+      catalog['APPENDIX'] << file.ext('.re')
+    when /postdef/
+      catalog['POSTDEF'] << file.ext('.re')
+    else
+      catalog['CHAPS'] << file.ext('.re')
+    end
+  end
+  File.write(CATALOG_FILE, YAML.dump(catalog))
 end
 
 task :default => :html_all
@@ -46,21 +64,31 @@ task :web => WEBROOT
 desc 'generate EPUB file'
 task :epub => BOOK_EPUB
 
-SRC = FileList['*.re'] + [CONFIG_FILE]
+SRC = FileList['*.md'] - %w(SUMMARY.md)
+OBJ = SRC.ext('re') + [CATALOG_FILE]
+INPUT = OBJ + [CONFIG_FILE]
 
-file BOOK_PDF => SRC do
+rule '.re' => '.md' do |t|
+  sh "bundle exec md2review --render-link-in-footnote #{t.source} > #{t.name}"
+end
+
+file CATALOG_FILE => 'SUMMARY.md' do |t|
+  convert_summary
+end
+
+file BOOK_PDF => INPUT do
   FileUtils.rm_rf [BOOK_PDF, BOOK, BOOK+"-pdf"]
   sh "review-pdfmaker #{CONFIG_FILE}"
 end
 
-file BOOK_EPUB => SRC do
+file BOOK_EPUB => INPUT do
   FileUtils.rm_rf [BOOK_EPUB, BOOK, BOOK+"-epub"]
   sh "review-epubmaker #{CONFIG_FILE}"
 end
 
-file WEBROOT => SRC do
+file WEBROOT => INPUT do
   FileUtils.rm_rf [WEBROOT]
   sh "review-webmaker #{CONFIG_FILE}"
 end
 
-CLEAN.include([BOOK, BOOK_PDF, BOOK_EPUB, BOOK+"-pdf", BOOK+"-epub", WEBROOT])
+CLEAN.include([BOOK, BOOK_PDF, BOOK_EPUB, BOOK+"-pdf", BOOK+"-epub", WEBROOT, OBJ])

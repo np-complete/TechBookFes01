@@ -43,11 +43,13 @@ Re:VIEWが生成するRakefileを編集します。
 
 ```ruby
 rule '.re' => '.md' do |t|
-   sh "bundle exec md2review --render-link-in-footnote #{t.source} > #{t.name}
+   sh "md2review --render-link-in-footnote #{t.source} > #{t.name}
 end
 ```
 
-でmarkdownからreview形式に変換しています。
+でmarkdownからreview形式[^1]に変換しています。
+
+[^1]: 実際のPull Requestは bundle exec を使っています
 
 もうひとつ`catalog.yml`を`SUMMARY.md`から作るタスクを追加しています。
 あとがきと付録はそれぞれ`postdef-*.md`と`appendix-*.md`というファイル名を付ける前提にしています。

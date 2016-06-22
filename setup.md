@@ -22,7 +22,9 @@
 
     $ gem install review md2review
 
-でRe:VIEW関連のコマンドをインストールします。
+でRe:VIEW関連のコマンドをインストールします[^1]。
+
+[^1]: もしくはGemfileに追加してbundle installします
 
 ### texのインストール
 
@@ -36,6 +38,6 @@
 
     $ kanji-config-updmap auto
 
-これでセットアップはできているはずです[^1]。
+これでセットアップはできているはずです[^2]。
 
-[^1]: 正直TeXのインストールに自信ない
+[^2]: 正直TeXのインストールに自信ない

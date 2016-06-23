@@ -8,6 +8,7 @@ BOOK_EPUB = BOOK+".epub"
 CATALOG_FILE = "catalog.yml"
 CONFIG_FILE = "config.yml"
 WEBROOT = "webroot"
+COVER = 'titlepage.tex'
 
 def build(mode, chapter)
   sh "review-compile --target=#{mode} --footnotetext --stylesheet=style.css #{chapter} > tmp"
@@ -66,7 +67,7 @@ task :epub => BOOK_EPUB
 
 SRC = FileList['*.md'] - %w(SUMMARY.md)
 OBJ = SRC.ext('re') + [CATALOG_FILE]
-INPUT = OBJ + [CONFIG_FILE]
+INPUT = OBJ + [CONFIG_FILE, COVER]
 
 rule '.re' => '.md' do |t|
   sh "bundle exec md2review --render-link-in-footnote #{t.source} > #{t.name}"

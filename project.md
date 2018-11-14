@@ -36,6 +36,14 @@
 でGitBookのローカルサーバを起動してみましょう。
 ブラウザで`http://localhost:4000`にアクセスすると`README.md`の内容が表示されていると思います。
 
+例えばemacsのロックファイル等、ディレクトリにリンクファイルが作られたり消えたりすると、
+gitbookサーバがしょっちゅうエラーで止まります。
+その場合は、
+
+    $ while true ; do gitbook serve ; done
+
+という感じにシェルでループさせると良いと思います。
+
 ## gitbookからreviewの繋ぎこみをする
 
 Re:VIEWが生成するRakefileを編集します。

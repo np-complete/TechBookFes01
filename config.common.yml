@@ -1,0 +1,10 @@
+inherit: ["config.yml"]
+booktitle: 技術同人誌の環境構築
+aut: まさらっき
+pbl: NP-complete
+date: 2016-06-25 技術書典
+history: [["2016-06-25"]]
+toc: false
+cover: titlepage.tex
+coverimage: null
+titlepage: false

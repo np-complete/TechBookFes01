@@ -18,7 +18,7 @@ jobs:
       - run: bundle exec rake pdf
         env:
           REVIEW_CONFIG_FILE: config.ebook.yml
-      - uses: actions/upload-artifact@v1
+      - uses: actions/upload-artifact@v4
         with:
           name: book
           path: book.pdf

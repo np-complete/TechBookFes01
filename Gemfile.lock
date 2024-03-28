@@ -27,7 +27,7 @@ PLATFORMS
 DEPENDENCIES
   md2review
   rake
-  review (= 5.8.0)
+  review
 
 BUNDLED WITH
    2.2.22

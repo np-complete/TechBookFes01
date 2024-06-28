@@ -8,15 +8,17 @@ GEM
       tty-color (~> 0.5)
     rake (13.2.1)
     redcarpet (3.5.1)
-    review (5.8.0)
+    review (5.9.0)
       image_size
       rexml
       rouge
       rubyzip
       tty-logger
-    rexml (3.2.6)
+    rexml (3.3.1)
+      strscan
     rouge (3.30.0)
     rubyzip (2.3.2)
+    strscan (3.1.0)
     tty-color (0.6.0)
     tty-logger (0.6.0)
       pastel (~> 0.8)

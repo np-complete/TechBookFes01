@@ -19,7 +19,7 @@ jobs:
       - run: bundle exec rake pdf
         env:
           REVIEW_CONFIG_FILE: config.ebook.yml
-      - uses: aws-actions/configure-aws-credentials@v4
+      - uses: aws-actions/configure-aws-credentials@v5
         with:
           aws-access-key-id: ${{ secrets.BOOK_DEPLOY_ACCESS_KEY }}
           aws-secret-access-key: ${{ secrets.BOOK_DEPLOY_SECRET_KEY }}

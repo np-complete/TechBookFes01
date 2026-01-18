@@ -1,27 +1,15 @@
 name: deploy
 on:
-  push:
-    branches:
-      - master
+  pull_request_target:
+    types: closed
+permissions:
+  id-token: write
+  contents: read
 jobs:
-  build:
+  deploy:
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - uses: masarakki/docker-alias@v3
-        with:
-          image: vvakame/review:5.2
-          commands: review-pdfmaker
-      - uses: ruby/setup-ruby@v1
-        with:
-          bundler-cache: true
-      - run: rm `bundle exec which review-pdfmaker`
-      - run: bundle exec rake pdf
-        env:
-          REVIEW_CONFIG_FILE: config.ebook.yml
-      - uses: aws-actions/configure-aws-credentials@v5
-        with:
-          aws-access-key-id: ${{ secrets.BOOK_DEPLOY_ACCESS_KEY }}
-          aws-secret-access-key: ${{ secrets.BOOK_DEPLOY_SECRET_KEY }}
-          aws-region: us-west-2
-      - run: aws s3 cp book.pdf s3://np-complete-books/pdf/TechBookFes01.pdf --acl public-read
+      - uses: np-complete/build-book-action@v2.1
+      - uses: np-complete/publish-book-action@v2
